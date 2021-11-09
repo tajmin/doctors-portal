@@ -2,12 +2,13 @@ import { Alert, Button, Container, Grid, TextField } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
 import login from '../../../images/login.png'
 const Register = () => {
     const [registrationDetails, setRegistrationDetails] = useState({});
     const { user, authError, registerUser, isLoading } = useAuth();
+    const history = useHistory();
 
     const handleOnBlur = event => {
         const field = event.target.name;
@@ -23,7 +24,7 @@ const Register = () => {
             alert('passwords did not match');
             return;
         }
-        registerUser(registrationDetails.email, registrationDetails.password);
+        registerUser(registrationDetails.email, registrationDetails.password, registrationDetails.name, history);
 
     }
     return (
@@ -35,6 +36,9 @@ const Register = () => {
                     </Typography>
                     {
                         isLoading ? <CircularProgress /> : <form onSubmit={handleRegistrationForm}>
+                            <TextField sx={{ my: 1 }} label="Name"
+                                fullWidth size="small" type="text" name="name" variant="standard" onBlur={handleOnBlur}
+                            />
                             <TextField sx={{ my: 1 }} label="Email"
                                 fullWidth size="small" type="email" name="email" variant="standard" onBlur={handleOnBlur}
                             />
